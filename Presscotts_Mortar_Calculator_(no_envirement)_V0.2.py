@@ -147,7 +147,6 @@ def main():
     print('='*90)         
     print('INPUT')
     print('='*90)
-        
     posMortar = str (input("Enter your position (The Gridmark, 8-10 digit, no spaces or punctuation): "))
     posTarget = str (input("Enter your targets position (The Gridmark, 8-10 digit, no spaces or punctuation): "))
 
@@ -244,12 +243,13 @@ def main():
     
     if distance > 3100: 
         print( "ERROR: OUT OF RANGE (Target Too Far)")
-        
+        main()
     if distance < 50:
         print( "ERROR: OUT OF RANGE (Target Too close)")
+        main()
         
     
-        '''finding the valid ranges'''
+    '''finding the valid ranges'''
    
     '''charge 0'''
     for i in range(len(l0)):
@@ -324,33 +324,33 @@ def main():
         farFT0 = charge0[range0Upper][3]
         avgFL0 = (nearFT0 + farFT0)/2
     if charge1Truth == 1:
-        nearFT1 = charge1[range0Lower][3]
-        farFT1 = charge1[range0Upper][3]
+        nearFT1 = charge1[range1Lower][3]
+        farFT1 = charge1[range1Upper][3]
         avgFL1 = (nearFT1 + farFT1)/2
     if charge2Truth == 1:
-        nearFT2 = charge2[range0Lower][3]
-        farFT2 = charge2[range0Upper][3]
+        nearFT2 = charge2[range2Lower][3]
+        farFT2 = charge2[range2Upper][3]
         avgFL2 = (nearFT2 + farFT2)/2
             
     ''' The print statments '''
     print('='*90)
-    print('='*90)
     print (f' FIRE MISSION ')
     print (f' Azimuth: {azimuth}') 
-    print (f' Distance from Target {distance} Meters ')
+    print (f' Distance from Target {distance:.2f} Meters ')
     print (f' Elevation ranges: ')
+    print('='*90)
     if  charge0Truth == 1:
-        print (f' [ Charge 0 Near Elevation:{nearEL0}, Far Elevation:{farEL0}] \n Average Elevation for Charge 0 {avgelevation0} \n Flight Time: {avgFL0}S')
+        print (f' [ Charge 0 Near Elevation:{nearEL0}, Far Elevation:{farEL0}] \n Average Elevation for Charge 0 {avgelevation0} \n Flight Time: {avgFL0:.2f}S')
     else:
         print(' Charge 0 is invalid')
     print('='*90)
     if  charge1Truth == 1:
-        print (f' [ Charge 1 Near Elevation:{nearEL1}, Far Elevation:{farEL1}] \n Average Elevation for Charge 1 {avgelevation1}\n Flight Time: {avgFL1}S')
+        print (f' [ Charge 1 Near Elevation:{nearEL1}, Far Elevation:{farEL1}] \n Average Elevation for Charge 1 {avgelevation1}\n Flight Time: {avgFL10:.2f}S')
     else:
         print(' Charge 1 is invalid')
     print('='*90)
     if  charge2Truth == 1:
-        print (f' [ Charge 2 Near Elevation:{nearEL2}, Far Elevation:{farEL2}] \n Average Elevation for Charge 2 {avgelevation2}\n Flight Time: {avgFL2}S')
+        print (f' [ Charge 2 Near Elevation:{nearEL2}, Far Elevation:{farEL2}] \n Average Elevation for Charge 2 {avgelevation2}\n Flight Time: {avgFL2:.2f}S')
     else:
         print(' Charge 2 is invalid')
     print('='*90)
