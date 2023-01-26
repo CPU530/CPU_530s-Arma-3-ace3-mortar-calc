@@ -144,16 +144,21 @@ def main():
         
       }
     
-    print('='*90)         
-    print('INPUT')
+    print('*'*90)         
+    print('[INPUT]')
     print('='*90)
     posMortar = str (input("Enter your position (The Gridmark, 8-10 digit, no spaces or punctuation): "))
     posTarget = str (input("Enter your targets position (The Gridmark, 8-10 digit, no spaces or punctuation): "))
 
     print('='*90)
-    print('OUTPUT')
-    
-    
+    print('[OUTPUT]')
+  
+    if len(posMortar) % 2 == 1:
+        print('ERROR: lenth of gridmark is odd, renter gridmarks')
+        main()
+    if len(posTarget)% 2 == 1:
+        print('ERROR: lenth of gridmark is odd, renter gridmarks')    
+        main()
     '''Determining X,Y coordinates and setup for distance'''
     posMortarXY = str(posMortar)
     mUpper = ((len (posMortarXY))/2) 
@@ -181,12 +186,13 @@ def main():
     yGridT = posTargetXY[mLower::1]
     posTargetY = str(yGridT)
     posTargetY = int(posTargetY)
-  
+    
+    #print(f'tartget x{posTargetX} target y{posTargetY} \n youX {posMortarX} yourY {posMortarY} ')
     ''' distance CALC'''
     dx = (posTargetX - posMortarX)
-   # print(f'dx= {dx}')
+    #print(f'dx= {dx}')
     dy = (posTargetY - posMortarY)
-   # print(f'dy= {dy}')
+    #print(f'dy= {dy}')
     distance = math.sqrt(dx**2 + dy**2) 
     
     '''distance unit adjuestment'''    
@@ -335,7 +341,7 @@ def main():
     ''' The print statments '''
     print('='*90)
     print (f' FIRE MISSION ')
-    print (f' Azimuth: {azimuth}') 
+    print (f' Azimuth: {azimuth:.2f}') 
     print (f' Distance from Target {distance:.2f} Meters ')
     print (f' Elevation ranges: ')
     print('='*90)
@@ -345,7 +351,7 @@ def main():
         print(' Charge 0 is invalid')
     print('='*90)
     if  charge1Truth == 1:
-        print (f' [ Charge 1 Near Elevation:{nearEL1}, Far Elevation:{farEL1}] \n Average Elevation for Charge 1 {avgelevation1}\n Flight Time: {avgFL10:.2f}S')
+        print (f' [ Charge 1 Near Elevation:{nearEL1}, Far Elevation:{farEL1}] \n Average Elevation for Charge 1 {avgelevation1}\n Flight Time: {avgFL1:.2f}S')
     else:
         print(' Charge 1 is invalid')
     print('='*90)
