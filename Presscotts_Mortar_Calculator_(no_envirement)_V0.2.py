@@ -5,18 +5,22 @@ made with the help of this guide: https://steamcommunity.com/sharedfiles/filedet
 '''
 
 '''to slice in the ditionary list======    charge0[50][2]
-list ins dictionary is as follows
-   [elevation, 
-   d-elev/per100m/dr, 
-time of flight per 100md/r, 
-time of flight, 
-azimuth crosswind corrrection of 1mps, 
-rangewind headwind 1mps m,
-rangewind tailwind 1mps m,
-air temp 15degree std 1 deg decline, 
-air temp 15degree std 1 deg incline,
-air density 1pct decline,
-   air density 1pct incline]
+
+the tables are a dictionary with a list as the value below are the indecies of the list with there respective values
+the keys for the dictionary are the range values
+[
+0 elevation, 
+1 d-elev/per100m/dr,
+2 time of flight per 100md/r,
+3 time of flight,
+4 azimuth crosswind corrrection of 1mps,
+5 rangewind headwind 1mps m,
+6 rangewind tailwind 1mps m,
+7 air temp 15degree std 1 deg decline,
+8 air temp 15degree std 1 deg incline,
+9 air density 1pct decline,
+10 air density 1pct incline
+]
 '''
 
 import math 
@@ -32,8 +36,53 @@ def checkKey(dic, key):
         print("value =", dic[key])
     else:
         print("Not present")
-        
 
+'''
+range calculation needs a generalized format
+
+the gernallized form should take the result of the get list 
+all is intialized
+then it should simply be 
+rangeCalculation(l0)
+rangeCalculation(l1)
+rangeCalculation(l2)
+
+issue all values are marked and specified to generalize would cause the values to of course become generalized meaning the values assign would be over written every successive loop
+solution would be to contain the whole process to  for each charge to in its own chunk which as far as i can tell taht would be a complete restructure of the last 150-200 lines of code 
+'''
+def rangeCalculation(x): 
+   for i in range(len(x)):
+        if distance < x[i]:
+            allNear0.append(x[i])
+        if distance > x[i]:
+            allFar0.append(x[i])    
+    
+    if len(allFar0) == 0 or len(allNear0) == 0:
+        #print("No valid Range in Charge 0")
+        charge0Truth = 0
+    else:
+        allFar0.sort(reverse=True)   
+        allNear0.sort(reverse=False)
+        range0Upper = allNear0[0]
+        range0Lower = allFar0[0]
+        charge0Truth = 1
+         
+         
+def reEnterInfo():
+   while len(posMortar) % 2 == 1 or len(posTarget)% 2 == 1 or posMortar.isnumeric == True or  posTarget.isnumeric == True:
+      if len(posMortar) % 2 == 1:
+         print('ERROR: lenth of gridmark is odd, renter the gridmark of your Position')
+         posMortar = str (input("Enter your position (The Gridmark, 8-10 digit, no spaces or punctuation): "))
+      if len(posTarget)% 2 == 1:
+         print('ERROR: lenth of gridmark is odd, renter the gridmark of your Target ')
+         posTarget = str (input("Enter your targets position (The Gridmark, 8-10 digit, no spaces or punctuation)
+      if posMortar.isnumeric == True:
+         print('ERROR: Gridmarks must contain numbers only, renter the gridmark of your Position')
+         posMortar = str (input("Enter your position (The Gridmark, 8-10 digit, no spaces or punctuation): ")) 
+      if posTarget.isnumeric == True:
+         print('ERROR: Gridmarks must contain numbers only, renter the gridmark of your Target ')
+         posTarget = str (input("Enter your targets position (The Gridmark, 8-10 digit, no spaces or punctuation):                             
+                         
 def main():
     '''mortar range table for reference for math'''
     charge0 = {
@@ -154,11 +203,10 @@ def main():
     print('[OUTPUT]')
   
     if len(posMortar) % 2 == 1:
-        print('ERROR: lenth of gridmark is odd, renter gridmarks')
-        main()
+       reEnterInfo()
     if len(posTarget)% 2 == 1:
-        print('ERROR: lenth of gridmark is odd, renter gridmarks')    
-        main()
+       reEnterInfo()
+                                
     '''Determining X,Y coordinates and setup for distance'''
     posMortarXY = str(posMortar)
     mUpper = ((len (posMortarXY))/2) 
@@ -248,11 +296,9 @@ def main():
     ''' l0A goes with range0B and vice versea '''
     
     if distance > 3100: 
-        print( "ERROR: OUT OF RANGE (Target Too Far)")
-        main()
+        reEnterInfo()
     if distance < 50:
-        print( "ERROR: OUT OF RANGE (Target Too close)")
-        main()
+        reEnterInfo()
         
     
     '''finding the valid ranges'''
