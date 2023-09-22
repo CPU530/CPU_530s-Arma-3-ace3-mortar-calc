@@ -1,6 +1,6 @@
 """
 Presscotts Mortar Calculator 
-Made by Discord user: corrupted ginger ale#144////steam user: CPU 530
+Made by Discord user: corruptedgingerale////steam user: Presscott
 made with the help of this guide: https://steamcommunity.com/sharedfiles/filedetails/?id=1516328874
 """
 
