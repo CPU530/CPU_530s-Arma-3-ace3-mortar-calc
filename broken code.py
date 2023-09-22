@@ -102,16 +102,23 @@ def rangeCalculation(x, distance, charge, count):
         print(f" Charge {count} is invalid")
 
 
-def gridmarks(charge0, charge1, charge2):
+def gridmarks(
+    charge0,
+    charge1,
+    charge2,
+    global_mortar_pos
+):
     count = 0
     print("*" * 90)
     print("[INPUT]")
     print("=" * 90)
-    posMortar = str(
+    posMortar = global_mortar_pos
+    """ posMortar = str(
         input(
             "Enter your position (The Gridmark, 8-10 digit, no spaces or punctuation): "
         )
     )
+    """
     posTarget = str(
         input(
             "Enter your targets position (The Gridmark, 8-10 digit, no spaces or punctuation): "
@@ -335,7 +342,7 @@ def radial(charge0, charge1, charge2):
     Safety Information: The FO may provide additional safety information, such as friendly unit locations or any potential hazards in the vicinity of the target 3.
 
 
-    the importatnt take away here is that the FO Position needs to be known and there for so must the position of the gun
+    the important take away here is that the FO Position needs to be known and there for so must the position of the gun
     the method written here is not a polar
     however the method here is radial
     and is useful for gun direct fire calculations where a FO may not be in need or have a LOS
@@ -355,8 +362,8 @@ def radial(charge0, charge1, charge2):
     )
 
     # target bearing conversion; dToMills = 17.77777777777777777778 is the constant used for conversion
-    dToMills = int(17.77777777777777777778)
-    if len(Target_bearing) != 4 or len(Target_bearing) != 3:
+    dToMills = float(17.77777777777777777778)
+    if len(Target_bearing) != 4 and len(Target_bearing) != 3:
         print("=" * 90)
         print("ERROR: You did not enter a valid input")
         Target_bearing = str(
@@ -365,7 +372,7 @@ def radial(charge0, charge1, charge2):
             )
         )
     else:
-        Target_bearing=Target_bearing
+        Target_bearing = Target_bearing
     if len(Target_bearing) == 4:
         average_Bearing = int(Target_bearing)
         # since the bearing is already in mils we dont need to do anytihng
@@ -379,7 +386,6 @@ def radial(charge0, charge1, charge2):
         bearing_WinL = (Target_bearing) * dToMills
         bearing_WinU = (Target_bearing + 1) * dToMills
         average_Bearing = (bearing_WinL + bearing_WinU) / 2
-
     # this creates a list of all ranges in the dictionaries which will be passed to the range calc func
     l0 = getList(charge0)
     l1 = getList(charge1)
@@ -391,6 +397,7 @@ def radial(charge0, charge1, charge2):
     print("=" * 90)
     print(f" FIRE MISSION ")
     print(f" Azimuth: {average_Bearing:.2f}")
+    print(f" Azimuth Bounds: {bearing_WinL:.2f} -- {bearing_WinU:.2f}")
     print(f" Distance from Target {Target_distance:.2f} Meters ")
 
     print(f" Elevation ranges: ")
@@ -511,7 +518,7 @@ def main():
     }
 
     """
-    add way for usesr to choose between polar fire and linear fire 
+    add way for user to choose between polar fire and linear fire 
     """
     # initialize global var global_mortar_pos
     # what i want is for the global_mortar_pos to function as a global variable to which can be passed as all functions
@@ -526,56 +533,68 @@ def main():
         
         when selecting fire mission again allow for different input that changes the value of global_mortar_pos
     """
+
     global_mortar_pos = str(input("Enter the Grid position of your gun team: "))
-    if int(global_mortar_pos) % 2 == 1:
+    
+    while len(global_mortar_pos) % 2 == 1:
         print("=" * 90)
         print("ERROR: You did not enter a valid input")
-        mission_determiner = str(
-            input(
-                "For linear missions enter 1\nFor PolarMission enter\nFor Radial missions enter 3\nEnter either 1 or 2 or 3: "
-            )
-        )
+        global_mortar_pos = str(input("Enter the Grid position of your gun team: "))
+
     while global_mortar_pos.isnumeric:
         print("*" * 90)
         print("[CHOOSE A FIRE MISSION TYPE]")
         print("=" * 90)
         mission_determiner = str(
             input(
-                "For linear missions enter 1\nFor PolarMission enter 2\nFor Radial missions enter 3\nEnter the word (relay) to reset/enter the gunposition\nEnter either 1 or 2 or 3: "
+                "For Grid missions enter 1\nFor PolarMission enter 2\nFor Radial missions enter 3\nEnter the word (relay) to reset/enter the gunposition\nor type (end) to terminate script\nEnter either 1 or 2 or 3: "
             )
         )
         if mission_determiner == "1":
-            gridmarks(charge0, charge1, charge2)
+            gridmarks(charge0, charge1, charge2, global_mortar_pos)
+            continue
         if mission_determiner == "2":
-            polar(charge0, charge1, charge2)
+            polar(charge0, charge1, charge2, global_mortar_pos)
+            continue
         if mission_determiner == "3":
             radial(charge0, charge1, charge2)
-
+            continue
         if mission_determiner == "relay":
-            global_mortar_pos = str("sad trombone")
-            restart()
+            global_mortar_pos = str(input("Enter the Grid position of your gun team: "))
+            continue
+        if mission_determiner == "end":
+            sys.exit()
 
         while (
             mission_determiner != "1"
-            or mission_determiner != "3"
-            or mission_determiner != "2"
-            or mission_determiner != "relay"
+            and mission_determiner != "3"
+            and mission_determiner != "2"
+            and mission_determiner != "relay"
+            and mission_determiner != "end"
         ):
             print("=" * 90)
             print("ERROR: You did not enter a valid input")
             mission_determiner = str(
                 input(
-                    "For linear missions enter 1\nFor PolarMission enter\nFor Radial missions enter 3\nEnter either 1 or 2 or 3: "
+                    "For Grid missions enter 1\nFor PolarMission enter 2\nFor Radial missions enter 3\nEnter the word (relay) to reset/enter the gunposition\nor type (end) to terminate script\nEnter either 1 or 2 or 3: "
                 )
             )
             if mission_determiner == "1":
-                gridmarks(charge0, charge1, charge2)
+                gridmarks(charge0, charge1, charge2, global_mortar_pos)
+                continue
             if mission_determiner == "2":
-                polar(charge0, charge1, charge2)
+                polar(charge0, charge1, charge2, global_mortar_pos)
+                continue
             if mission_determiner == "3":
                 radial(charge0, charge1, charge2)
-
-        main()
+                continue
+            if mission_determiner == "relay":
+                global_mortar_pos = str(
+                    input("Re-Enter the Grid position of your gun team: "))        
+                continue
+            if mission_determiner == "end":
+                sys.exit()
+        # main()
         """
             restart_input = input("New Fire Mission? (yes/no): ")
             if restart_input.lower() in ["yes", "y"]:
