@@ -102,8 +102,7 @@ def rangeCalculation(x, distance, charge, count):
         print(f" Charge {count} is invalid")
 
 
-def gridmarks(charge0,charge1,charge2):
-    
+def gridmarks(charge0, charge1, charge2):
     count = 0
     print("*" * 90)
     print("[INPUT]")
@@ -171,7 +170,7 @@ def gridmarks(charge0,charge1,charge2):
     posTargetY = str(yGridT): Converts the extracted second half to a string.
     posTargetY = int(posTargetY): Converts the extracted second half to an integer, representing the Y coordinate of the target position.
     """
-     #the orginal and described method the current implemented is in testing 
+    # the orginal and described method the current implemented is in testing
     posMortarXY = str(posMortar)
     mUpper = (len(posMortarXY)) / 2
     mUpper = int(mUpper)
@@ -197,7 +196,7 @@ def gridmarks(charge0,charge1,charge2):
     yGridT = posTargetXY[mLower::1]
     posTargetY = str(yGridT)
     posTargetY = int(posTargetY)
-    
+
     """
     #lmao the code is bad
     posMortarXY = str(posMortar)
@@ -297,7 +296,7 @@ def gridmarks(charge0,charge1,charge2):
     main()
 
 
-def polar(charge0,charge1,charge2):
+def polar(charge0, charge1, charge2):
     """
     a polar fire mission consists of a given bearing and a given distance such as 500m 0541mil
 
@@ -311,19 +310,54 @@ def polar(charge0,charge1,charge2):
     Target Description: The FO describes the target, including its type, size, and any distinguishing features that can aid in identification 2.
     Method of Control: The FO specifies the method of control to be used, such as “Adjust Fire” or “Fire for Effect” 3.
     Safety Information: The FO may provide additional safety information, such as friendly unit locations or any potential hazards in the vicinity of the target 3.
-
-
     """
     count = 0
     print("*" * 90)
     print("[INPUT]")
     print("=" * 90)
-    Target_distance = str(input("Enter your the distance from you to the target: "))
-    Target_bearing = str(
-        input("enter the bearing of the target in either mils or degrees: ")
+    Target_distance = str(
+        input("Enter your the distance from you to the target in meters: ")
     )
 
+    Target_bearing = str(
+        input(
+            "enter the bearing of the target in either mils or degrees (you must use leading zeros): "
+        )
+    )
+
+    # target bearing conversion; dToMills = 17.77777777777777777778 is the constant used for conversion
+    dToMills = 17.77777777777777777778
+    if len(Target_bearing) == 4:
+        average_Bearing = Target_bearing
+        # since the bearing is already in mils we dont need to do anytihng
+    if len(Target_bearing) == 3:
+        # since this will mean that the bearing is entered in degrees we must convert it
+        # bearing_win  l/u is the weill take the values of two azimuths since the will be
+        # because we are scaling down there will be a level of undefined variation in mils there fore +/- dToMills
+        # please note that this is a estimation so in some cases the upper or lower may be more accurate
+        #however providing the middle and/or average number would is the more preferable outcome for a single output instance due to it being the middle number and a comprimise in short use mills you fukin heathen
+        bearing_WinL = (Target_bearing) * dToMills
+        bearing_WinU = (Target_bearing + 1) * dToMills
+        average_Bearing = (bearing_WinL + bearing_WinU) / 2
+    # this creates a list of all ranges in the dictionaries which will be passed to the range calc func
+    l0 = getList(charge0)
+    l1 = getList(charge1)
+    l2 = getList(charge2)
     print("=" * 90)
+    print("[OUTPUT]")
+    print("=" * 90)
+    print("=" * 90)
+    print(f" FIRE MISSION ")
+    print(f" Azimuth: {average_Bearing:.2f}")
+    print(f" Distance from Target {Target_distance:.2f} Meters ")
+
+    print(f" Elevation ranges: ")
+    print("=" * 90)
+    rangeCalculation(l0, distance=Target_distance, charge=charge0, count="0")
+    print("=" * 90)
+    rangeCalculation(l1, distance=Target_distance, charge=charge1, count="1")
+    print("=" * 90)
+    rangeCalculation(l2, distance=Target_distance, charge=charge2, count="2")
 
     polar()
 
@@ -436,7 +470,6 @@ def main():
         3100: [848, 54, 2, 27.9, 1.6, 8.5, -8.2, 0.4, -0.4, -7.2, 6.8],
     }
 
-
     """
     add way for usesr to choose between polar fire and linear fire 
     """
@@ -444,12 +477,14 @@ def main():
     print("[CHOOSE A FIRE MISSION TYPE]")
     print("=" * 90)
     mission_determiner = str(
-        input("For linear missions enter 1\nFor Polar missions enter 2\nEnter Your 1 or 2: " )
+        input(
+            "For linear missions enter 1\nFor Polar missions enter 2\nEnter Your 1 or 2: "
+        )
     )
     if mission_determiner == "1":
-        gridmarks(charge0,charge1,charge2)
+        gridmarks(charge0, charge1, charge2)
     if mission_determiner == "2":
-        polar(charge0,charge1,charge2)
+        polar(charge0, charge1, charge2)
     while mission_determiner != "1" or mission_determiner != "2":
         print("=" * 90)
         print("ERROR: You did not enter a valid input")
@@ -459,9 +494,9 @@ def main():
             )
         )
         if mission_determiner == "1":
-            gridmarks(charge0,charge1,charge2)
+            gridmarks(charge0, charge1, charge2)
         if mission_determiner == "2":
-            polar(charge0,charge1,charge2)
+            polar(charge0, charge1, charge2)
 
     main()
     """
@@ -472,5 +507,6 @@ def main():
         else:
             print("Exiting...")
     """
+
 
 main()
