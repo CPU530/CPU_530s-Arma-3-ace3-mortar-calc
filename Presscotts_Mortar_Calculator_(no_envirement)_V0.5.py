@@ -77,24 +77,24 @@ def rangeCalculation(x, distance, charge, count):
 
     if len(allFar) == 0 or len(allNear) == 0:
         # print("No valid Range in Charge 0")
-        chargeTruth = 0
+        chargeTruth = False
     else:
         allFar.sort(reverse=True)
         allNear.sort(reverse=False)
         rangeUpper = allNear[0]
         rangeLower = allFar[0]
-        chargeTruth = 1
+        chargeTruth = True
     if type(rangeUpper) and type(rangeLower) == int:
         farEL = charge[rangeUpper][0]
         nearEL = charge[rangeLower][0]
         avgelevation = (farEL + nearEL) / 2
 
     """Flight Time Calculations"""
-    if chargeTruth == 1:
+    if chargeTruth == True:
         nearFT = charge[rangeLower][3]
         farFT = charge[rangeUpper][3]
         avgFL = (nearFT + farFT) / 2
-    if chargeTruth == 1:
+    if chargeTruth == True:
         print(
             f" [ Charge {count} Near Elevation:{nearEL}, Far Elevation:{farEL}] \n Average Elevation for Charge {count} {avgelevation} \n Flight Time: {avgFL:.2f}S"
         )
@@ -226,7 +226,6 @@ def main():
         )
     )
 
-    
     print("=" * 90)
 
     while len(posMortar) % 2 == 1 or not posMortar.isnumeric():
@@ -251,7 +250,34 @@ def main():
             )
         )
 
-    """Determining X,Y coordinates and setup for distance"""
+    """
+    Determining X,Y coordinates and setup for distance
+    documentation for understanding:
+    
+    Here’s a breakdown of what each part does:
+    posMortarXY = str(posMortar): Converts the posMortar variable to a string.
+    mUpper = (len(posMortarXY)) / 2: Calculates the upper index for splitting the string in half.
+    mUpper = int(mUpper): Converts the upper index to an integer.
+    xGridM = posMortarXY[0:mUpper:1]: Extracts the first half of the string using slicing.
+    posMortarX = str(xGridM): Converts the extracted first half to a string.
+    posMortarX = int(posMortarX): Converts the extracted first half to an integer, representing the X coordinate of the mortar position.
+    mLower = len(posMortarXY) / 2: Calculates the lower index for splitting the string in half.
+    mLower = int(mLower): Converts the lower index to an integer.
+    yGridM = posMortarXY[mLower::1]: Extracts the second half of the string using slicing.
+    posMortarY = str(yGridM): Converts the extracted second half to a string.
+    posMortarY = int(posMortarY): Converts the extracted second half to an integer, representing the Y coordinate of the mortar position.
+    posTargetXY = str(posTarget): Converts the posTarget variable to a string.
+    tUpper = (len(posTargetXY) / 2) + 1: Calculates the upper index for splitting the string in half, considering an additional character for proper splitting.
+    tUpper = int(tUpper): Converts the upper index to an integer.
+    xGridT = posTargetXY[0:mUpper:1]: Extracts the first half of the string using slicing.
+    posTargetX = str(xGridT): Converts the extracted first half to a string.
+    posTargetX = int(posTargetX): Converts the extracted first half to an integer, representing the X coordinate of the target position.
+    tLower = len(posTargetXY) / 2: Calculates the lower index for splitting the string in half.
+    tLower = int(tLower): Converts the lower index to an integer.
+    yGridT = posTargetXY[mLower::1]: Extracts the second half of the string using slicing.
+    posTargetY = str(yGridT): Converts the extracted second half to a string.
+    posTargetY = int(posTargetY): Converts the extracted second half to an integer, representing the Y coordinate of the target position.
+    """
     posMortarXY = str(posMortar)
     mUpper = (len(posMortarXY)) / 2
     mUpper = int(mUpper)
