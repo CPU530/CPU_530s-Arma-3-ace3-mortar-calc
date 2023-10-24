@@ -5,4 +5,4 @@ Right now it is only a .py file therefor it cannot run on its own you need pytho
 
 despite what it says the program can take 6digit grids but i strongly recomend that you do not use them as a area tha tis 100mx100m is rather larger to be firing in when getting and 8digit can narrow your accuaracy down quite alot small effort for big bump in results 
 
-the zip contains a standalone EXE
+
