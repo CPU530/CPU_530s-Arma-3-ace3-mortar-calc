@@ -396,10 +396,12 @@ def radial(charge0, charge1, charge2):
     print("=" * 90)
     print("=" * 90)
     print(f" FIRE MISSION ")
-    print(f" Azimuth: {average_Bearing:.2f}")
-    print(f" Azimuth Bounds: {bearing_WinL:.2f} -- {bearing_WinU:.2f}")
+    if len(str(Target_bearing)) == 3:
+        print(f" Azimuth: {average_Bearing:.2f}")
+        print(f" Azimuth Bounds: {bearing_WinL:.2f} -- {bearing_WinU:.2f}")
+    else:
+        print(f"Azimuth: {Target_bearing}")
     print(f" Distance from Target {Target_distance:.2f} Meters ")
-
     print(f" Elevation ranges: ")
     print("=" * 90)
     rangeCalculation(l0, distance=Target_distance, charge=charge0, count="0")
