@@ -27,7 +27,36 @@ import math
 import os
 import sys
 
+#returns true if string is even, false if odd
+def CISI_odd(global_mortar_pos):
+    if len(global_mortar_pos) % 2 == 0:
+        return True
 
+    if len(global_mortar_pos) % 2 == 1:
+        return False
+        
+#returns true if there are only numbers 
+def CISI_Numeric(global_mortar_pos):
+    stopper = True
+    for i in global_mortar_pos:
+        if stopper == True:
+            if global_mortar_pos[i].isnumeric() == True:
+                stopper = True
+            if global_mortar_pos[i].isnumeric() == False:
+                stopper = False
+        if stopper == False:
+            return False
+        
+        """
+        chat solution maybe worth a look 
+        
+        def CISI_Numeric(global_mortar_pos):
+            for item in global_mortar_pos:
+                if not item.isnumeric():
+                return False
+            return True
+
+        """
 # this funtions primary purpose to allow the script to cycle without creating a loop
 def restart():
     os.execl(sys.executable, sys.executable, *sys.argv)
@@ -478,7 +507,7 @@ def main():
     # i want this variable ot be established once and then allow the script to cycle until prompted to reset pos
 
     global_mortar_pos = str(input("Enter the Grid position of your gun team: "))
-
+    #very important note the current itteration of checks are flawed reason is unknown going to make helper function to trim down on code overall and individualize the checks    
     while len(global_mortar_pos) % 2 == 1 or not global_mortar_pos.isnumeric:
         print("=" * 90)
         print("ERROR: You did not enter a valid input")
